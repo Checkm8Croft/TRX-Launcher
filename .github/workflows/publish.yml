@@ -44,7 +44,7 @@ jobs:
 
       # Step 1: Delete existing release assets (force overwrite)
       - name: Delete previous release assets
-        uses: peter-evans/delete-release@v2
+        uses: peter-evans/delete-release@v2.2.0
         with:
           tag_name: v0.1
           github_token: ${{ secrets.Pushatore }}

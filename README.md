@@ -21,6 +21,7 @@ It features:
 - Node.js >= 18.x  
 - npm (or yarn)  
 - TRX engine compiled and ready  
+- Electron installed with npm
 
 ---
 
@@ -29,5 +30,6 @@ It features:
 1. Clone this repository:
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Checkm8Croft/TRX-Launcher
 cd TRX-Launcher
+npm start

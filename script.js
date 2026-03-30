@@ -30,7 +30,7 @@ function changeAudio(screenId) {
   audioNext.muted = isMuted;
 
   if (document.visibilityState === "visible") {
-    audioNext.play().catch(() => console.log("Interazione richiesta per autoplay"));
+    audioNext.play().catch(() => console.log("Autoplay Requested"));
   }
 
   // cancella fade precedente se presente
@@ -91,7 +91,7 @@ screens.forEach(screen => observer.observe(screen));
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") {
     if (activeScreen) {
-      audioCurrent.play().catch(() => console.log("Interazione richiesta per autoplay"));
+      audioCurrent.play().catch(() => console.log("Autoplay Requested"));
     }
   } else {
     audioCurrent.pause();

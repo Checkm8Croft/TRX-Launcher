@@ -70,7 +70,7 @@ ipcMain.on("launch-game", async (event, game) => {
       cancelId: 0,
       title: "TRX not found",
       message: `TRX not found on ${TRXPath || "<not set>"}`,
-      detail: "Scegli OK per selezionare manualmente il file TRX"
+      detail: "Select OK for selecting manually the TRX exevutable"
     });
 
     if (res.response === 0) return; // Cancel

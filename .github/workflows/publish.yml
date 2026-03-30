@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -27,7 +28,7 @@ jobs:
       - name: Build Electron app
         run: npm run build
         env:
-            GH_TOKEN: ${{ secrets.Pushatore }}
+          GH_TOKEN: ${{ secrets.Pushatore }}
 
       - name: Upload artifacts for debugging
         uses: actions/upload-artifact@v4
@@ -42,27 +43,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 1: Delete existing release assets (force overwrite)
-      - name: Delete previous release assets
-        uses: peter-evans/delete-release@v2.2.0
-        with:
-          tag_name: v0.1
-          github_token: ${{ secrets.Pushatore }}
-
-      # Step 2: Create release v0.1
-      - name: Create release v0.1
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.Pushatore }}
-        with:
-          tag_name: v0.1
-          release_name: TRX Launcher 0.1
-          body: Initial release of TRX Launcher
-          draft: false
-          prerelease: false
-
-      # Step 3: Upload all built artifacts to the release
+      # Create or update the release v0.1
       - name: Upload artifacts to release
         uses: softprops/action-gh-release@v1
         env:

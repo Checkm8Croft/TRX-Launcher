@@ -60,11 +60,15 @@ jobs:
 
       - name: List files
         run: ls -R artifacts
-      - name: Rename files
+      - name: Rename files safely
         run: |
-          for f in artifacts/**/*.exe; do mv "$f" "${f// /-}"; done
-          for f in artifacts/**/*.dmg; do mv "$f" "${f// /-}"; done
-          for f in artifacts/**/*.AppImage; do mv "$f" "${f// /-}"; done
+          shopt -s globstar
+          for f in artifacts/**/*; do
+            new=$(echo "$f" | tr ' ' '-')
+            if [ "$f" != "$new" ]; then
+              mv "$f" "$new"
+            fi
+          done
       # 🔥 Upload pulito nella release
       - name: Upload artifacts to release
         uses: softprops/action-gh-release@v1

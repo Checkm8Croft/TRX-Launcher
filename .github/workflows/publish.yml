@@ -25,8 +25,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # 🔥 BUILD DIFFERENZIATO PER OS
       - name: Build Electron app
-        run: npm run build
+        run: |
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            npx electron-builder --win portable
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            npx electron-builder --mac dmg --x64 --arm64
+          else
+            npx electron-builder --linux AppImage
+          fi
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.Pushatore }}
 
@@ -44,17 +53,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 🔥 SCARICA TUTTI GLI ARTIFACTS
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
           path: artifacts
 
-      # 🔍 DEBUG (puoi rimuoverlo dopo)
       - name: List files
         run: ls -R artifacts
 
-      # 🚀 UPLOAD NELLA RELEASE
+      # 🔥 Upload pulito nella release
       - name: Upload artifacts to release
         uses: softprops/action-gh-release@v1
         env:

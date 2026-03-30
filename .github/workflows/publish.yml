@@ -1,4 +1,4 @@
-name: Build & Update TRX Launcher
+name: Build & Publish TRX Launcher
 
 on:
   push:
@@ -12,10 +12,8 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        node: [18.x]
-
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Setup Node.js
@@ -28,10 +26,8 @@ jobs:
 
       - name: Build Electron app
         run: npm run build
-        env:
-          GH_TOKEN: ${{ secrets.Pushatore }}
 
-      - name: Upload build artifacts (for workflow download)
+      - name: Upload artifacts for debugging
         uses: actions/upload-artifact@v4
         with:
           name: TRXLauncher-${{ matrix.os }}
@@ -41,16 +37,37 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Upload artifacts to existing release v0.1
+      # Step 1: Delete existing release assets (force overwrite)
+      - name: Delete previous release assets
+        uses: peter-evans/delete-release@v2
+        with:
+          tag_name: v0.1
+          github_token: ${{ secrets.Pushatore }}
+
+      # Step 2: Create release v0.1
+      - name: Create release v0.1
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.Pushatore }}
+        with:
+          tag_name: v0.1
+          release_name: TRX Launcher 0.1
+          body: Initial release of TRX Launcher
+          draft: false
+          prerelease: false
+
+      # Step 3: Upload all built artifacts to the release
+      - name: Upload artifacts to release
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.Pushatore }}
         with:
           tag_name: v0.1
-          overwrite: true   # <-- forza la sovrascrittura degli artifacts
+          overwrite: true
           files: |
             dist/*.exe
             dist/*.dmg

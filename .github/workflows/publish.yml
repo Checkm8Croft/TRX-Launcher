@@ -26,6 +26,8 @@ jobs:
 
       - name: Build Electron app
         run: npm run build
+        env:
+            GH_TOKEN: ${{ secrets.Pushatore }}
 
       - name: Upload artifacts for debugging
         uses: actions/upload-artifact@v4

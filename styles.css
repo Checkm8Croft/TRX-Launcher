@@ -1,0 +1,118 @@
+/* Reset base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+html {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+}
+
+body {
+  height: 100vh;
+  color: white;
+}
+
+/* Sezioni */
+.screen {
+  height: 100vh;
+  width: 100%;
+  scroll-snap-align: start;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Background immagini */
+#tr1 {
+  background: url("imgs/TR1.png") center/cover no-repeat;
+}
+
+#tr2 {
+  background: url("imgs/TR2.png") center/cover no-repeat;
+}
+
+#tr3 {
+  background: url("imgs/TR3.png") center/cover no-repeat;
+}
+
+/* Overlay glass */
+.overlay {
+  backdrop-filter: blur(12px);
+  background: rgba(0, 0, 0, 0.55);
+  padding: 40px 60px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+/* Titolo */
+h1 {
+  font-size: 3rem;
+  margin-bottom: 30px;
+  letter-spacing: 2px;
+}
+
+/* Bottoni */
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+button {
+  padding: 12px 30px;
+  font-size: 1rem;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Hover figo */
+button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+/* Click */
+button:active {
+  transform: scale(0.95);
+}
+/* Smooth transition */
+body, .overlay, button {
+  transition: all 0.3s ease;
+}
+
+#muteToggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: rgba(0,0,0,0.5);
+  color: white;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+}
+
+#muteToggle:hover {
+  transform: scale(1.1);
+}
+
+/* Togli scrollbar e forza overflow nascosto */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;   /* <-- niente scrollbar */
+  height: 100%;
+  width: 100%;
+}

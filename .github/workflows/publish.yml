@@ -1,4 +1,4 @@
-name: Build & Release TRX Launcher
+name: Build & Update TRX Launcher
 
 on:
   push:
@@ -15,61 +15,42 @@ jobs:
         node: [18.x]
 
     steps:
-      # 1️⃣ Checkout repository
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      # 2️⃣ Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 18.x
 
-      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # 4️⃣ Build Electron app
       - name: Build Electron app
         run: npm run build
         env:
           GH_TOKEN: ${{ secrets.Pushatore }}
 
-      # 5️⃣ Upload build artifacts
-      - name: Upload build artifacts
+      - name: Upload build artifacts (for workflow download)
         uses: actions/upload-artifact@v4
         with:
           name: TRXLauncher-${{ matrix.os }}
-          path: dist/
+          path: dist/*
 
   release:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      # 1️⃣ Checkout again
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      # 2️⃣ Create release
-      - name: Create GitHub Release 0.1
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Upload artifacts to existing release v0.1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.Pushatore }}
         with:
           tag_name: v0.1
-          release_name: TRX Launcher 0.1
-          body: "Initial release of TRX Launcher"
-          draft: false
-          prerelease: false
-
-      # 3️⃣ Upload artifacts to release
-      - name: Upload artifacts to release
-        uses: softprops/action-gh-release@v1
-        with:
           files: |
             dist/*.exe
             dist/*.dmg
             dist/*.AppImage
-        env:
-          GITHUB_TOKEN: ${{ secrets.Pushatore }}
